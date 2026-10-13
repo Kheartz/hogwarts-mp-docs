@@ -1,6 +1,6 @@
 ---
 title: Overview
-group: Guides
+description: What a HogwartsMP resource is, where its code runs, and which guide to open first.
 sidebar:
   order: 1
 ---
@@ -16,17 +16,17 @@ Use the navigation to browse the globals available to the selected environment. 
 
 **Start here:**
 
-- [Your first resource](/guides/getting-started/) — the manifest, script roles, load order, and sharing code between resources.
+- [Your first resource](/guides/getting-started/first-resource/) — the manifest, script roles, load order, and sharing code between resources.
 
 **The idea everything builds on:**
 
-- [Events](/guides/events/) — listeners, the client/server bridge, the runtime event catalog, and the trust boundary.
+- [Events](/guides/core-concepts/events/) — listeners, the client/server bridge, the runtime event catalog, and the trust boundary.
 
 **Running a server:**
 
-- [Hosting a server](/guides/hosting/) — installing on Windows or Linux, Foundations, ports, the masterlist, and updates.
-- [Server configuration](/guides/server-config/) — every `server.json` key, command-line flags, passwords, and required mods.
-- [Docker and game panels](/guides/docker/) — the public server image, Compose, and the Pterodactyl and Pelican egg.
+- [Hosting a server](/guides/hosting-a-server/run-a-server/) — installing on Windows or Linux, Foundations, ports, the masterlist, and updates.
+- [Server configuration](/guides/hosting-a-server/configuration/) — every `server.json` key, command-line flags, passwords, and required mods.
+- [Docker and game panels](/guides/hosting-a-server/docker/) — the public server image, Compose, and the Pterodactyl and Pelican egg.
 
 ## Server example
 

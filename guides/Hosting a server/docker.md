@@ -1,8 +1,8 @@
 ---
 title: Docker and game panels
-group: Guides
+description: Run the public server image with Docker Compose, or on Pterodactyl and Pelican with the official egg.
 sidebar:
-  order: 6
+  order: 92
 ---
 
 Every release publishes the Linux dedicated server as a public container image:
@@ -15,7 +15,7 @@ The image holds the same native server the release ZIP ships, repackaged on Ubun
 
 Tags are exact release versions with no leading `v`, such as `1.8.0`. There is no `latest`, `stable` or `testing` tag, because the server must match the release your players run: a mismatched client is rejected before it loads in. Changing the tag is how you update.
 
-This page covers the container. Configuration, Foundations, ports and the masterlist work exactly as in [Hosting a server](/guides/hosting/).
+This page covers the container. Configuration, Foundations, ports and the masterlist work exactly as in [Hosting a server](/guides/hosting-a-server/run-a-server/).
 
 ## Docker Compose
 
@@ -89,7 +89,7 @@ The server runs as UID and GID `10001`, not root. A named volume handles ownersh
 sudo chown -R 10001:10001 ./resources
 ```
 
-Install Foundations by copying its `hmp-*` directories into `resources/` and its example configs into `data/`, as in [Install HMP Foundations](/guides/hosting/#4-install-hmp-foundations). Restart the container after changing resources or `server.json`.
+Install Foundations by copying its `hmp-*` directories into `resources/` and its example configs into `data/`, as in [Install HMP Foundations](/guides/hosting-a-server/run-a-server/#4-install-hmp-foundations). Restart the container after changing resources or `server.json`.
 
 ### Database and secrets
 
@@ -106,7 +106,7 @@ services:
 
 ## Ports and flags
 
-Arguments after the image name go straight to the server, as the [command-line flags](/guides/server-config/#command-line-flags). Change the published ports to match:
+Arguments after the image name go straight to the server, as the [command-line flags](/guides/hosting-a-server/configuration/#command-line-flags). Change the published ports to match:
 
 ```sh
 docker run -d --name hogwartsmp --init --restart unless-stopped \
@@ -137,7 +137,7 @@ docker compose pull
 docker compose up -d
 ```
 
-The runtime lives in the image, so there is nothing to copy. Your volume keeps `server.json`, `data/` and `resources/`; replace the Foundations pack there with the release that matches. The [update checklist](/guides/hosting/#update-to-a-new-release) still applies.
+The runtime lives in the image, so there is nothing to copy. Your volume keeps `server.json`, `data/` and `resources/`; replace the Foundations pack there with the release that matches. The [update checklist](/guides/hosting-a-server/run-a-server/#update-to-a-new-release) still applies.
 
 The server handles `SIGTERM` and `SIGINT` by shutting down cleanly: every resource's stop handlers run and state is saved. `docker stop` and `docker compose down` send `SIGTERM`, and the 30-second grace period gives the shutdown time to finish.
 
@@ -157,7 +157,7 @@ Then, in the panel:
 1. **Admin → Nests → Import Egg**, and upload `egg-hogwartsmp.json`.
 2. Create a server from the egg. Its **primary allocation** is the UDP game port players connect to.
 3. Assign a **second allocation** for the information API and set the **HTTP port** variable to it. The variable selects a port; it does not allocate one.
-4. Set **Masterlist token** to your [server key](/guides/hosting/#8-list-it-publicly), or leave it blank for an unlisted server. The panel's value overrides any `server-token` in `server.json`.
+4. Set **Masterlist token** to your [server key](/guides/hosting-a-server/run-a-server/#8-list-it-publicly), or leave it blank for an unlisted server. The panel's value overrides any `server-token` in `server.json`.
 5. Start the server. The panel marks it running once the log shows `HogwartsMP Server successfully started`.
 
 The install step only creates `resources/`, `logs/` and `.packages/`. Upload Foundations or your own resources into `resources/` through the panel's **File Manager** or SFTP, and edit `server.json` there for the keys the panel does not control, such as `maxplayers` and `password`. The panel stops the server with `^C`, which is the same clean shutdown as `SIGINT`.

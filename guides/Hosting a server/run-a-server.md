@@ -1,8 +1,9 @@
 ---
 title: Hosting a server
-group: Guides
+description: Take a fresh Windows or Linux machine to a public server running HMP Foundations, then keep it running and updated.
 sidebar:
-  order: 4
+  label: Run a server
+  order: 90
 ---
 
 A HogwartsMP server is one executable plus a `server.json` configuration file and a `resources/` directory. The release ships the runtime only, with no game mode. Public servers run **HMP Foundations**, a complete resource pack that adds characters, inventory, banking, jobs, shops, administration and other common systems on top of a MySQL or MariaDB database.
@@ -19,7 +20,7 @@ This guide takes a fresh machine to a server players can join, then covers keepi
 | An [HMP Foundations release](https://github.com/hogwarts-mp/foundations/releases) | The supported starting point for a public server. Its [compatibility matrix](https://github.com/hogwarts-mp/foundations/blob/main/COMPATIBILITY.md) names the HogwartsMP release it pairs with. |
 | Control of the host firewall, and of the router on a home connection | Players reach the server on **UDP 27015**. |
 
-> Running in Docker or under Pterodactyl or Pelican? The server's [public image](/guides/docker/) packages this same runtime. Read on for configuration, Foundations and the masterlist, then follow that page for the container itself.
+> Running in Docker or under Pterodactyl or Pelican? The server's [public image](/guides/hosting-a-server/docker/) packages this same runtime. Read on for configuration, Foundations and the masterlist, then follow that page for the container itself.
 
 ## 1. Get the release
 
@@ -93,7 +94,7 @@ The server reads `server.json` from its **working directory**. Create it next to
 
 That is enough for a first start. The server also writes a complete default file on its first start if none exists, listing every key the build understands. Leave `server-token` empty until you [list the server](#8-list-it-publicly).
 
-Every key, the join password, the command-line overrides and the required-mod list are covered in [Server configuration](/guides/server-config/).
+Every key, the join password, the command-line overrides and the required-mod list are covered in [Server configuration](/guides/hosting-a-server/configuration/).
 
 ## 4. Install HMP Foundations
 
@@ -170,7 +171,7 @@ The console accepts `status` (address and player count), `help`, and `stop` or `
 
 ## 7. Join it
 
-Start HogwartsMP through the launcher, open **Play**, and enter the server's address, or pick it from the list once it is [listed](#8-list-it-publicly). The client assumes port 27015, so add `:port` only if you changed it. Fill **Password** only if the server [sets one](/guides/server-config/#passwords).
+Start HogwartsMP through the launcher, open **Play**, and enter the server's address, or pick it from the list once it is [listed](#8-list-it-publicly). The client assumes port 27015, so add `:port` only if you changed it. Fill **Password** only if the server [sets one](/guides/hosting-a-server/configuration/#passwords).
 
 You can also hand players a link. The launcher registers the `hogwartsmp://` scheme each time it runs, so once a player has started it once, opening a link connects straight to your server:
 
@@ -277,7 +278,7 @@ Keep the previous runtime and the matching database backup until the new build h
 | Symptom | Check |
 | --- | --- |
 | Exits immediately | Read the first error in the log. Confirm the working directory, a writable `logs/`, complete runtime files, and valid JSON. |
-| `JSON config could not be applied: … type must be …` | A `server.json` key has the wrong JSON type, such as `"port": "27015"` or `null`. The message names the type, not the key. See [Server configuration](/guides/server-config/#validation). |
+| `JSON config could not be applied: … type must be …` | A `server.json` key has the wrong JSON type, such as `"port": "27015"` or `null`. The message names the type, not the key. See [Server configuration](/guides/hosting-a-server/configuration/#validation). |
 | Linux: `version 'GLIBC_2.38' not found` | The distribution is too old. Use Ubuntu 24.04+ or Debian 13+, directly or as a container base. |
 | Linux: `libnode.so.141: cannot open shared object file` | Keep the complete Linux bundle together, or start it with `LD_LIBRARY_PATH=/opt/hogwartsmp`. Do not substitute a `libnode` from another release. |
 | Linux: exits on a VPS with `Tracy Profiler initialization failure: CPU doesn't support invariant TSC` | The virtual CPU hides a feature the built-in profiler checks for. Start the server with `TRACY_NO_INVARIANT_CHECK=1` in its environment (`Environment=TRACY_NO_INVARIANT_CHECK=1` in the unit). |
@@ -296,6 +297,6 @@ When asking for help, include the release, the operating system, a sanitized `se
 
 ## Related
 
-- [Server configuration](/guides/server-config/): every `server.json` key, command-line overrides, passwords and required mods.
-- [Docker and game panels](/guides/docker/): the public server image, Compose, and the Pterodactyl and Pelican egg.
-- [Your first resource](/guides/getting-started/): writing your own resources on top of the server.
+- [Server configuration](/guides/hosting-a-server/configuration/): every `server.json` key, command-line overrides, passwords and required mods.
+- [Docker and game panels](/guides/hosting-a-server/docker/): the public server image, Compose, and the Pterodactyl and Pelican egg.
+- [Your first resource](/guides/getting-started/first-resource/): writing your own resources on top of the server.

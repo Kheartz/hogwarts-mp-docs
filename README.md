@@ -6,14 +6,14 @@ The closed-source Mod remains authoritative for generated client and server API 
 
 ## Structure
 
-- `guides/` contains scripting concepts and tutorials.
-- `guides/server/` may contain server-only guides and catalogs.
+- `guides/` contains scripting concepts and tutorials. Each subdirectory is a sidebar section named after the directory (`guides/Getting started/first-resource.md` is served at `/guides/getting-started/first-resource/`). Sections are ordered by the lowest `sidebar.order` among their pages, so each section owns a range: Getting started 10–19, Core concepts 20–29, Hosting a server 90–99.
 - Image directories live beside the Markdown document that references them.
 - `docs.config.json` owns the generator pin, branding, links, navigation, and community-content mapping.
 - `scripts/sync_contract.mjs` downloads and verifies the public scripting contract.
 - `scripts/public_contract.mjs` drops underscore-prefixed declarations, the Mod's internal QA and diagnostic hooks, from a copy of the contract so the site documents only the public API.
 - `scripts/docs.mjs` is the single local and CI generation entrypoint.
 - `scripts/check_samples.mjs` type-checks every JavaScript sample in `guides/` against the public contract.
+- `scripts/check_links.mjs` checks that every link and anchor on the built landing and guide pages resolves.
 - `src/styles/production.css` is shared by the standalone site and local preview.
 
 The closed-source Mod repository owns only contract generation and publication. It does not render, deploy, or trigger this documentation website.
@@ -56,6 +56,7 @@ Before opening a pull request, verify the affected pages at desktop and mobile w
 
 ```sh
 pnpm build
+pnpm docs:links
 pnpm docs:check
 git diff --check
 ```

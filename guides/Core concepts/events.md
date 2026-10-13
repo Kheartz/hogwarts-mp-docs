@@ -1,8 +1,8 @@
 ---
 title: Events
-group: Guides
+description: Listen and emit across resources and the client/server boundary, the runtime event catalog, and what to trust.
 sidebar:
-  order: 3
+  order: 20
 ---
 
 `Events` is the asynchronous, named event bus available to both server and client resources. Resources use it to react to runtime activity, communicate with other resources in the same environment, and exchange messages across the client/server boundary.
@@ -284,4 +284,4 @@ Do not use a native event name for a different payload. Keep authoritative decis
 
 ## Where to go next
 
-- [Your first resource](/guides/getting-started/) — the manifest, script roles, and the resource lifecycle these events belong to.
+- [Your first resource](/guides/getting-started/first-resource/) — the manifest, script roles, and the resource lifecycle these events belong to.

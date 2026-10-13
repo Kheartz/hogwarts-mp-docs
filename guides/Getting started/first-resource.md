@@ -1,8 +1,8 @@
 ---
 title: Your first resource
-group: Guides
+description: Build a minimal resource with a manifest and server and client scripts, then learn load order, sharing code and cleaning up.
 sidebar:
-  order: 2
+  order: 10
 ---
 
 Everything a game mode does in HogwartsMP lives in a **resource**: a directory containing a `package.json` manifest and one or more JavaScript files. The server discovers every resource directory under `resources/` at startup, runs its server scripts in Node.js, and packages its client scripts and assets for each connecting player, where they run in a sandboxed V8 context.
@@ -21,7 +21,7 @@ resources/
         └── main.js       # runs on every player's machine (sandboxed V8)
 ```
 
-The split matters: the two sides see **different globals** and never share memory. The server owns authoritative game state — players, NPCs, beasts, world objects, inventory, the replicated environment. The client owns local presentation and input — the HUD, the camera, web views, the local player's native components. They talk through [events](/guides/events/).
+The split matters: the two sides see **different globals** and never share memory. The server owns authoritative game state — players, NPCs, beasts, world objects, inventory, the replicated environment. The client owns local presentation and input — the HUD, the camera, web views, the local player's native components. They talk through [events](/guides/core-concepts/events/).
 
 ## The manifest
 
@@ -118,7 +118,7 @@ Events.on("mygm:announce", (payload) => {
 });
 ```
 
-Keep authoritative decisions on the server and let the client draw the result. See [Events](/guides/events/) for the full client/server bridge and the trust boundary that comes with it.
+Keep authoritative decisions on the server and let the client draw the result. See [Events](/guides/core-concepts/events/) for the full client/server bridge and the trust boundary that comes with it.
 
 ## Sharing code between resources
 
@@ -200,5 +200,5 @@ The same TypeScript declarations that generate this reference can be loaded into
 
 ## Where to go next
 
-- [Events](/guides/events/) — listeners, the client/server bridge, the runtime event catalog, and the trust boundary.
+- [Events](/guides/core-concepts/events/) — listeners, the client/server bridge, the runtime event catalog, and the trust boundary.
 - The **Server API** and **Client API** references in the navigation — every global available to each environment.

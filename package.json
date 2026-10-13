@@ -7,6 +7,7 @@
   "scripts": {
     "docs:sync": "node scripts/sync_contract.mjs",
     "docs:check": "node scripts/check_samples.mjs",
+    "docs:links": "node scripts/check_links.mjs",
     "dev": "node scripts/docs.mjs dev",
     "build": "node scripts/docs.mjs build"
   },

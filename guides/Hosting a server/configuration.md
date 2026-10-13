@@ -1,11 +1,11 @@
 ---
 title: Server configuration
-group: Guides
+description: Every server.json key and command-line flag, passwords, required CurseForge mods, respawning, and the information API.
 sidebar:
-  order: 5
+  order: 91
 ---
 
-The server takes its settings from `server.json` in its working directory, and command-line flags can override some of them. This page lists every key and flag. To install a server first, see [Hosting a server](/guides/hosting/).
+The server takes its settings from `server.json` in its working directory, and command-line flags can override some of them. This page lists every key and flag. To install a server first, see [Hosting a server](/guides/hosting-a-server/run-a-server/).
 
 ## server.json
 
@@ -44,7 +44,7 @@ Every key is optional: one you leave out takes its default. Restart the server a
 | `apiport` | `27016` | Information API port (**TCP**). |
 | `map` | `""` | Reserved. HogwartsMP ignores it; leave it empty. |
 | `maxplayers` | `32` | Connection cap. This build allows at most **128**; a higher value logs a warning and runs with 128. |
-| `server-token` | `""` | Masterlist key from the [MafiaHub dashboard](https://mafiahub.dev/dashboard/servers). Empty keeps the server unlisted. See [List it publicly](/guides/hosting/#8-list-it-publicly). |
+| `server-token` | `""` | Masterlist key from the [MafiaHub dashboard](https://mafiahub.dev/dashboard/servers). Empty keeps the server unlisted. See [List it publicly](/guides/hosting-a-server/run-a-server/#8-list-it-publicly). |
 | `password` | `""` | Password players must enter to join. Empty lets anyone in. See [Passwords](#passwords). |
 
 ### Mod keys
@@ -89,13 +89,13 @@ For example, to run a second server from another directory on the next pair of p
 ./HogwartsMPServer --port 28015 --apiport 28016
 ```
 
-`maxplayers`, `map` and the `mod` keys have no flags; set them in the file. Game panels use flags to inject the port and token they manage. That is why the [Pterodactyl egg](/guides/docker/#pterodactyl-and-pelican) overrides whatever `server.json` says for those keys.
+`maxplayers`, `map` and the `mod` keys have no flags; set them in the file. Game panels use flags to inject the port and token they manage. That is why the [Pterodactyl egg](/guides/hosting-a-server/docker/#pterodactyl-and-pelican) overrides whatever `server.json` says for those keys.
 
 > On a shared machine, other users can read a process's command line. Prefer `server.json` for `server-token` and `password` there, and keep that file readable only by the server's account.
 
 ## Passwords
 
-Set `password` (or pass `--password`) to make players enter it before they are admitted. Players type it into the **Password** field on the **Play** screen, next to the address. You can also send it in a `hogwartsmp://` [join link](/guides/hosting/#7-join-it) as `?password=…`.
+Set `password` (or pass `--password`) to make players enter it before they are admitted. Players type it into the **Password** field on the **Play** screen, next to the address. You can also send it in a `hogwartsmp://` [join link](/guides/hosting-a-server/run-a-server/#7-join-it) as `?password=…`.
 
 **Keep it to 64 plain ASCII characters or fewer, with no spaces at either end.** The server accepts up to 255 bytes, but the Play screen trims spaces from both ends and sends at most 64 bytes. A password that breaks either rule can never be typed correctly.
 
