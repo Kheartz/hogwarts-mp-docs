@@ -34,3 +34,9 @@ jobs:
           HOGMP_API_URL: ${{ vars.HOGMP_API_URL }}
           HOGMP_CONTRACT_CHANNEL: testing
         run: pnpm build
+
+      - name: Type-check guide samples
+        env:
+          HOGMP_API_URL: ${{ vars.HOGMP_API_URL }}
+          HOGMP_CONTRACT_CHANNEL: testing
+        run: pnpm docs:check
