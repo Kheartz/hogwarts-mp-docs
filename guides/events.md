@@ -144,6 +144,7 @@ Runtime-generated events use the normal `Events.on` and `Events.once` subscripti
 | --- | --- | --- |
 | `resourceStart` | `(resourceName)` | A JavaScript resource starts |
 | `resourceStop` | `(resourceName)` | A JavaScript resource is about to stop |
+| `playerConnecting` | `(connection)` | A player asks to join, before they hold a slot; `connection.reject()` turns them away, and a returned promise delays admission until it settles |
 | `playerConnect` | `(player)` | A player connects |
 | `playerDisconnect` | `(player)` | A player disconnects |
 | `playerLocationChanged` | `(player, current, previous)` | A player's coordinate-space context becomes available, unavailable during world travel, or changes area, region, or confirmed destination; each location is a `PlayerLocation` object or `null` |
@@ -167,7 +168,7 @@ Runtime-generated events use the normal `Events.on` and `Events.once` subscripti
 | `npcDied` | `(npcId, enemyId)` | A server-spawned NPC dies |
 | `npcDamaged` | `(npcId, attackerId, amount)` | A player reports damage to a server-spawned NPC |
 | `pvpHit` | `(casterId, victimId, spell, damage)` | A PvP hit has passed server arbitration and policy and was relayed to its victim; `damage` is the final amount |
-| `stateTableChange` | `({ key, value, deleted? })` | A server `StateTable` value is written or deleted |
+| `entityStateChange` | `(entity, key, value, previous)` | A script writes or removes one key of an entity's state or of `World.state`; `value` is `undefined` for a removal |
 
 Some native server events originate in the connected player's game. The reserved `playerDied`, `playerDowned`, and `playerDownedEnd` messages use a dedicated native RPC and cannot be forged through `Events.emitServer`, but they are still client-authored observations. Location context, native inventory reports, request completions, and `npcDamaged` also cross the client/server boundary. Apply server-side validation appropriate to the consequences of the handler. In particular, adopt a `playerInventoryNativeDelta` with `player.inventory.adoptNative()` only under an explicit allowlist. `playerAppearanceChanged` is emitted after the server accepts and sanitizes an appearance, while `pvpHit` is a post-policy informational event; use `Pvp.setPolicy` to veto or reprice PvP hits.
 
@@ -180,7 +181,7 @@ Events.on("playerConnect", (player) => {
 
 Events.on("chatCommand", (player, message, command, args) => {
   if (command === "wave") {
-    World.broadcastMessage(`${player.nickname} waves.`);
+    Chat.sendToAll(`${player.nickname} waves.`);
   }
 });
 ```
@@ -203,7 +204,7 @@ These events are delivered only inside the client runtime. Receiving a native cl
 | `creatorOpened` | `()` | The character creator opens |
 | `creatorConfirmed` | `({ first, last })` | The character creator closes after confirmation |
 | `creatorCancelled` | `()` | The character creator closes without confirmation |
-| `stateTableChange` | `({ key, value, deleted? })` | A replicated `StateTable` value is applied or deleted on the client |
+| `entityStateChange` | `(entity, key, value, previous)` | A replicated state write or removal arrives on the client; `value` is `undefined` for a removal |
 
 A `chatSend` handler may synchronously return `false` to prevent that line from being sent. An asynchronous return value cannot veto it.
 

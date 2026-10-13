@@ -89,9 +89,9 @@ Events.on("resourceStart", (resourceName) => {
   console.log("started");
 
   // Server-authoritative environment, replicated to every client.
-  Environment.setTime(15, 30);
-  Environment.setSeason(3);
-  Environment.setWeather("Snow_01");
+  World.setTime(15, 30);
+  World.setSeason(3);
+  World.setWeather("Snow_01");
 });
 
 Events.on("playerConnect", (player) => {
@@ -188,12 +188,7 @@ Events.on("resourceStop", (resourceName) => {
 
 ## Persisting state
 
-`Storage` is a server-side key/value store for anything that should survive a restart. `Storage.sub(name)` returns a namespaced view, which keeps unrelated systems from colliding on the same keys:
-
-```js
-const houses = Storage.sub("houses");
-houses.set(player.steamId, "Gryffindor");
-```
+HogwartsMP has no built-in database, and anything a resource only holds in memory is gone when the server stops. Server scripts run in Node.js, so a resource saves to whatever store it brings. On public servers that is usually [`hmp-mysql`](https://github.com/hogwarts-mp/foundations/tree/main/resources/hmp-mysql) from HMP Foundations, which shares one pooled MySQL or MariaDB connection with every resource that declares it as a dependency and reads it through `Imports.get("hmp-mysql")`.
 
 Player inventory has its own persistence path: `player.inventory.persist(slot)` selects a per-player record and loads it over the current model, or takes `false` to stop the built-in writes so a resource can save to its own store off `playerInventoryUpdated`.
 
@@ -201,7 +196,7 @@ Player inventory has its own persistence path: `player.inventory.persist(slot)` 
 
 The same TypeScript declarations that generate this reference can be loaded into your editor. Point a `tsconfig.json` at the published contract's `targets/server/api.d.ts` or `targets/client/api.d.ts` together with `targets/shared.d.ts`, and you get autocomplete and type checking for the whole API.
 
-> Load the server and client declarations **separately**. A global shown in one environment is not automatically available in the other: `Hud`, `Camera`, and `LocalPlayer` are client-only; `PlayerManager`, `Environment`, and `Storage` are server-only; `World` and `Pvp` exist on both sides with different members.
+> Load the server and client declarations **separately**. A global shown in one environment is not automatically available in the other: `Hud`, `Camera`, and `LocalPlayer` are client-only; `PlayerManager`, `NPCManager`, and `InventoryCatalog` are server-only; `World` and `Pvp` exist on both sides with different members.
 
 ## Where to go next
 
