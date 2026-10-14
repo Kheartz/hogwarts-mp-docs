@@ -25,12 +25,13 @@ const options = {
 // Samples elide the helpers, variables and sibling files around them, so a missing lowercase name or a relative
 // import is the reader's own code. A missing capitalized name looks like a runtime global and is reported. In
 // JavaScript, custom event payloads and exports are simply values, so reading one, even once a truthiness check
-// narrows it to `{}`, is not reported either; a TypeScript sample has to narrow them as its reader would.
+// narrows it to `{}`, or passing one on is not reported either; a TypeScript sample has to narrow them as its reader would.
 const ignored = (diagnostic, extension) => {
   const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
   const name = /'([^']+)'/.exec(message)?.[1] ?? "";
   if (diagnostic.code === 2307) return /^\.\.?\//.test(name);
   if (extension === ".js" && (diagnostic.code === 18046 || diagnostic.code === 2571)) return true;
+  if (extension === ".js" && diagnostic.code === 2345) return message.startsWith("Argument of type 'unknown'");
   if (extension === ".js" && diagnostic.code === 2339) return message.endsWith("on type '{}'.");
   if (![2304, 2552, 2584, 18004].includes(diagnostic.code)) return false;
   return /^[a-z_$]/.test(name);
