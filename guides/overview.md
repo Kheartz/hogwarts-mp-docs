@@ -45,6 +45,13 @@ Use the navigation to browse the globals available to the selected environment. 
 - [Doors](/guides/world/doors/) — holding the game's doors locked or open for everyone, and deciding who gets in.
 - [Loot](/guides/world/loot/) — server-owned chests, moonstones and foragables, per-player contents, and switching off the game's own loot.
 
+**User interface:**
+
+- [Web views](/guides/user-interface/web-views/) — HTML interfaces in the game, and messages between the page and your scripts.
+- [HUD, prompts and nametags](/guides/user-interface/hud-and-nametags/) — hiding the game's HUD, interaction prompts, and what players' nametags show.
+- [Map markers](/guides/user-interface/map-markers/) — markers, search circles and routes on the map, player blips, and the minimap.
+- [Keys and menus](/guides/user-interface/keys-and-menus/) — key bindings, locking the controls, and keeping the game's own menus shut.
+
 **Running a server:**
 
 - [Hosting a server](/guides/hosting-a-server/run-a-server/) — installing on Windows or Linux, Foundations, ports, the masterlist, and updates.
