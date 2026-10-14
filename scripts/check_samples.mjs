@@ -32,7 +32,7 @@ const ignored = (diagnostic, extension) => {
   if (diagnostic.code === 2307) return /^\.\.?\//.test(name);
   if (extension === ".js" && (diagnostic.code === 18046 || diagnostic.code === 2571)) return true;
   if (extension === ".js" && diagnostic.code === 2339) return message.endsWith("on type '{}'.");
-  if (![2304, 2552, 18004].includes(diagnostic.code)) return false;
+  if (![2304, 2552, 2584, 18004].includes(diagnostic.code)) return false;
   return /^[a-z_$]/.test(name);
 };
 
