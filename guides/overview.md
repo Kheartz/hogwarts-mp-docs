@@ -33,6 +33,12 @@ Use the navigation to browse the globals available to the selected environment. 
 - [Chat and commands](/guides/players/chat-and-commands/) — sending chat, taking over the chat relay, and slash commands.
 - [Inventory](/guides/players/inventory/) — the server-owned inventory, atomic changes, saving inventories, and items the game hands out.
 
+**NPCs and creatures:**
+
+- [NPCs](/guides/npcs-and-creatures/npcs/) — spawning enemies, controlling their health, targets and AI, and what their deaths pay.
+- [Camps and world events](/guides/npcs-and-creatures/camps-and-world-events/) — who spawns Overland's enemies, and running them from the server.
+- [Beasts and characters](/guides/npcs-and-creatures/beasts-and-characters/) — tame creatures players care for, and stationary townspeople.
+
 **Running a server:**
 
 - [Hosting a server](/guides/hosting-a-server/run-a-server/) — installing on Windows or Linux, Foundations, ports, the masterlist, and updates.

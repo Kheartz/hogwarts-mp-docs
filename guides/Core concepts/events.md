@@ -165,7 +165,7 @@ Runtime-generated events use the normal `Events.on` and `Events.once` subscripti
 | `playerAppearanceChanged` | `(player, blob, revision)` | The server accepts a newly harvested or explicitly published appearance; `blob` is sanitized and `revision` increases for the connection |
 | `playerTeleportComplete` | `(player, requestId, status, completion)` | A `player.teleport` request finishes; `completion` includes the normalized request, client-observed final transform, and ground-snap result |
 | `playerFastTravelComplete` | `(player, requestId, status)` | A `player.fastTravel` request finishes or times out |
-| `npcDied` | `(npcId, enemyId)` | A server-spawned NPC dies |
+| `npcDied` | `(npcId, enemyId, killerId, damagerIds)` | A server-spawned NPC dies; `killerId` is its killer's player id or `null`, and `damagerIds` lists every player that damaged it |
 | `npcDamaged` | `(npcId, attackerId, amount)` | A player reports damage to a server-spawned NPC |
 | `pvpHit` | `(casterId, victimId, spell, damage)` | A PvP hit has passed server arbitration and policy and was relayed to its victim; `damage` is the final amount |
 | `entityStateChange` | `(entity, key, value, previous)` | A script writes or removes one key of an entity's state or of `World.state`; `value` is `undefined` for a removal |
