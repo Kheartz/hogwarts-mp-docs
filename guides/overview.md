@@ -16,7 +16,9 @@ Use the navigation to browse the globals available to the selected environment. 
 
 **Start here:**
 
+- [Run a local server](/guides/getting-started/local-server/) — a server on your own machine to join and reload resources on while you work.
 - [Your first resource](/guides/getting-started/first-resource/) — the manifest, script roles, load order, and sharing code between resources.
+- [Debugging](/guides/getting-started/debugging/) — where output and errors go on each side, and what an error does to a resource.
 
 **The idea everything builds on:**
 

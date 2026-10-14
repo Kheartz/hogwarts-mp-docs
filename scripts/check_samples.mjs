@@ -7,7 +7,7 @@ import { syncContract } from "./sync_contract.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const guidesRoot = path.join(root, "guides");
-const languages = new Set(["js", "javascript", "mjs", "cjs"]);
+const extensions = { js: ".js", javascript: ".js", mjs: ".js", cjs: ".js", ts: ".ts", typescript: ".ts" };
 const options = {
   allowJs: true,
   checkJs: true,
@@ -22,18 +22,21 @@ const options = {
   types: [],
 };
 
-// Samples elide the helpers and variables around them, so a missing lowercase name is the reader's own code. A
-// missing capitalized name looks like a runtime global and is reported. Custom event payloads and exports are
-// `unknown` by design, so reading them, even once a truthiness check narrows them to `{}`, is not reported either.
-const ignored = (diagnostic) => {
+// Samples elide the helpers, variables and sibling files around them, so a missing lowercase name or a relative
+// import is the reader's own code. A missing capitalized name looks like a runtime global and is reported. In
+// JavaScript, custom event payloads and exports are simply values, so reading one, even once a truthiness check
+// narrows it to `{}`, is not reported either; a TypeScript sample has to narrow them as its reader would.
+const ignored = (diagnostic, extension) => {
   const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
-  if (diagnostic.code === 18046 || diagnostic.code === 2571) return true;
-  if (diagnostic.code === 2339) return message.endsWith("on type '{}'.");
+  const name = /'([^']+)'/.exec(message)?.[1] ?? "";
+  if (diagnostic.code === 2307) return /^\.\.?\//.test(name);
+  if (extension === ".js" && (diagnostic.code === 18046 || diagnostic.code === 2571)) return true;
+  if (extension === ".js" && diagnostic.code === 2339) return message.endsWith("on type '{}'.");
   if (![2304, 2552, 18004].includes(diagnostic.code)) return false;
-  return /^[a-z_$]/.test(/'([^']+)'/.exec(message)?.[1] ?? "");
+  return /^[a-z_$]/.test(name);
 };
 
-// Every JavaScript fence in a guide, with the guide line its first line of code sits on.
+// Every JavaScript and TypeScript fence in a guide, with the guide line its first line of code sits on.
 const extractSamples = (guide, source) => {
   const lines = source.split(/\r?\n/);
   const samples = [];
@@ -46,7 +49,8 @@ const extractSamples = (guide, source) => {
       if (close && close[1][0] === open[1][0] && close[1].length >= open[1].length) break;
       end++;
     }
-    if (languages.has(open[2].toLowerCase())) samples.push({ guide, line: i + 2, code: lines.slice(i + 1, end).join("\n") });
+    const extension = extensions[open[2].toLowerCase()];
+    if (extension) samples.push({ guide, line: i + 2, extension, code: lines.slice(i + 1, end).join("\n") });
     i = end;
   }
   return samples;
@@ -61,7 +65,7 @@ const environmentsFor = (sample, environments) => {
 };
 
 const checkEnvironment = (contractRoot, environment, samples) => {
-  const files = new Map(samples.map((sample, index) => [path.join(contractRoot, "samples", environment, `${index}.js`), `${sample.code}\nexport {};\n`]));
+  const files = new Map(samples.map((sample, index) => [path.join(contractRoot, "samples", environment, `${index}${sample.extension}`), `${sample.code}\nexport {};\n`]));
   const host = ts.createCompilerHost(options);
   const { fileExists, readFile: read, getSourceFile } = host;
   const sample = (name) => files.get(path.resolve(name));
@@ -75,9 +79,9 @@ const checkEnvironment = (contractRoot, environment, samples) => {
   const program = ts.createProgram([...declarations, ...files.keys()], options, host);
   const global = [...program.getOptionsDiagnostics(), ...program.getGlobalDiagnostics()];
   if (global.length) throw new Error(ts.formatDiagnostics(global, host));
-  return [...files.keys()].map((file) => {
+  return [...files.keys()].map((file, index) => {
     const source = program.getSourceFile(file);
-    return [...program.getSyntacticDiagnostics(source), ...program.getSemanticDiagnostics(source)].filter((diagnostic) => !ignored(diagnostic));
+    return [...program.getSyntacticDiagnostics(source), ...program.getSemanticDiagnostics(source)].filter((diagnostic) => !ignored(diagnostic, samples[index].extension));
   });
 };
 

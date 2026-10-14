@@ -2,7 +2,7 @@
 title: Your first resource
 description: Build a minimal resource with a manifest and server and client scripts, then learn load order, sharing code and cleaning up.
 sidebar:
-  order: 10
+  order: 11
 ---
 
 Everything a game mode does in HogwartsMP lives in a **resource**: a directory containing a `package.json` manifest and one or more JavaScript files. The server discovers every resource directory under `resources/` at startup, runs its server scripts in Node.js, and packages its client scripts and assets for each connecting player, where they run in a sandboxed V8 context.
@@ -158,33 +158,17 @@ Reading an export from a resource you have not declared as a dependency produces
 
 ## Cleaning up
 
-Entities you create on the server — NPCs, beasts, world objects, effects, characters — are not garbage-collected when your script loses the reference. They live until they are destroyed or the server stops. Tear down what you created in `resourceStop`:
+When a resource stops, the runtime releases what it held: its event subscriptions, timers and exports, and the native UI holds it was keeping (the Field Guide, action screen, and tool wheel). The entities its scripts created — NPCs, beasts, world objects, effects, characters — are destroyed, whether the resource was stopped or stopped because of an error.
+
+`resourceStop` is for what the runtime cannot do for you, such as saving state or telling players. It is dispatched while the resource is stopping, before its timers, exports, and event handlers are cleaned up, so its handles are still usable inside it:
 
 ```js
 // server/main.js
-const spawned = [];
-
-Events.on("resourceStart", (resourceName) => {
-  if (resourceName !== "my-gamemode") return;
-
-  const npc = NPC.create("Goblin_Grunt", 250, 120, 0, "hostile");
-  if (npc) spawned.push(npc);
-});
-
 Events.on("resourceStop", (resourceName) => {
   if (resourceName !== "my-gamemode") return;
-  for (const entity of spawned) {
-    try {
-      entity.destroy();
-    } catch {
-      // already gone
-    }
-  }
-  spawned.length = 0;
+  Chat.sendToAll("The game mode is restarting.");
 });
 ```
-
-`resourceStop` is dispatched while the resource is stopping, before its timers, exports, and event handlers are cleaned up, so the handles are still usable inside it. Event subscriptions, exports, and the native UI holds the resource was keeping (the Field Guide, action screen, and tool wheel) are released for you; the entities it spawned are not.
 
 ## Persisting state
 
@@ -194,7 +178,7 @@ Player inventory has its own persistence path: `player.inventory.persist(slot)` 
 
 ## Editor autocomplete
 
-The same TypeScript declarations that generate this reference can be loaded into your editor. Point a `tsconfig.json` at the published contract's `targets/server/api.d.ts` or `targets/client/api.d.ts` together with `targets/shared.d.ts`, and you get autocomplete and type checking for the whole API.
+The same TypeScript declarations that generate this reference are published on npm as `@hogwartsmp/types`, versioned with the release. Install the version your server runs as a dev dependency and name your side in a `jsconfig.json` or `tsconfig.json`, `"types": ["@hogwartsmp/types/server"]` or `"types": ["@hogwartsmp/types/client"]`, and your editor autocompletes and type-checks the whole API.
 
 > Load the server and client declarations **separately**. A global shown in one environment is not automatically available in the other: `Hud`, `Camera`, and `LocalPlayer` are client-only; `PlayerManager`, `NPCManager`, and `InventoryCatalog` are server-only; `World` and `Pvp` exist on both sides with different members.
 
