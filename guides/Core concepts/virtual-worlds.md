@@ -35,10 +35,7 @@ The value reads back at once and takes effect on the next server tick. A player'
 
 The world you set is combined with the map the player is in. In Overland, the game's main map, world N is world N. Every other map, such as a dungeon, has worlds of its own: players there share a world with the others in the same map who have the same world number, and never meet anyone in another map.
 
-Two cases split players further on their own:
-
-- During a loading screen between maps, each player is alone in a world of their own.
-- In the Room of Requirement, each room is its own world, combined with the world number.
+During a loading screen between maps, each player is alone in a world of their own.
 
 `player.virtualWorld` returns the number you set, not this combined world.
 
@@ -58,10 +55,6 @@ function spawnArenaGuard(arena, x, y, z) {
 An entity's world is not combined with a map, so it lines up with a player's world only in Overland. In any other map no world number matches, and only the global world `4294967295` reaches players there. An effect attached to an entity does not take that entity's world; set it on the effect too.
 
 An NPC's or beast's AI runs on the client of a player who can see it, so in a world with no players it stands still until someone arrives. `NPC.create`'s `preferredOwnerId` is honoured only if that player can see world 0 when the NPC spawns.
-
-### Zones
-
-A zone watches one world, set with the `virtualWorld` option of `Zone.create` (default 0), and matches entities in exactly that world. It has no global wildcard, and like other entities it matches players only in Overland.
 
 ### Showing an entity to one player
 
