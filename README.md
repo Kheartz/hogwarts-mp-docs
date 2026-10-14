@@ -12,7 +12,7 @@ The closed-source Mod remains authoritative for generated client and server API 
 - `scripts/sync_contract.mjs` downloads and verifies the public scripting contract.
 - `scripts/public_contract.mjs` drops underscore-prefixed declarations, the Mod's internal QA and diagnostic hooks, from a copy of the contract so the site documents only the public API.
 - `scripts/docs.mjs` is the single local and CI generation entrypoint.
-- `scripts/check_samples.mjs` type-checks every JavaScript sample in `guides/` against the public contract.
+- `scripts/check_samples.mjs` type-checks every JavaScript and TypeScript sample in `guides/` against the public contract.
 - `scripts/check_links.mjs` checks that every link and anchor on the built landing and guide pages resolves.
 - `src/styles/production.css` is shared by the standalone site and local preview.
 
@@ -61,6 +61,6 @@ pnpm docs:check
 git diff --check
 ```
 
-`pnpm docs:check` compiles each `js` fence against the contract's TypeScript declarations, so a sample that calls a removed or renamed API fails CI. Start a sample with a comment naming its environment, such as `// server` or `// client/main.js`, to check it against that environment alone; any other sample passes when it type-checks against at least one. Undeclared lowercase names are assumed to be the reader's own helpers and are not reported.
+`pnpm docs:check` compiles each `js` and `ts` fence against the contract's TypeScript declarations, so a sample that calls a removed or renamed API fails CI. Start a sample with a comment naming its environment, such as `// server` or `// src/client/main.ts`, to check it against that environment alone; any other sample passes when it type-checks against at least one. Undeclared lowercase names and relative imports are assumed to be the reader's own code and are not reported. A `js` sample may read an `unknown` event payload freely; a `ts` sample has to narrow it, as its reader would.
 
 The generated `dist/` is the same static artifact deployed in CI. Merges to `main` deploy against the selected contract channel, while the Mod independently publishes contracts and stops there.
