@@ -174,7 +174,7 @@ Events.on("resourceStop", (resourceName) => {
 
 HogwartsMP has no built-in database, and anything a resource only holds in memory is gone when the server stops. Server scripts run in Node.js, so a resource saves to whatever store it brings. On public servers that is usually [`hmp-mysql`](https://github.com/hogwarts-mp/foundations/tree/main/resources/hmp-mysql) from HMP Foundations, which shares one pooled MySQL or MariaDB connection with every resource that declares it as a dependency and reads it through `Imports.get("hmp-mysql")`.
 
-Player inventory has its own persistence path: `player.inventory.persist(slot)` selects a per-player record and loads it over the current model, or takes `false` to stop the built-in writes so a resource can save to its own store off `playerInventoryUpdated`.
+That includes player inventories: a joining player starts with an empty inventory, and it is dropped when they leave. [Saving inventories](/guides/players/inventory/#saving-inventories) shows how to keep it between visits.
 
 ## Editor autocomplete
 
