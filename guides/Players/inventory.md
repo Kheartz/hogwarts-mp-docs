@@ -28,7 +28,7 @@ Each row in `list()` is an item:
 | `kind` | `"item"`, `"gear"`, `"tool"` or `"mount"` |
 | `variation` | Gear's own variant id; empty for ordinary items |
 | `unique` | Whether the row is a unique item |
-| `identified`, `equipped`, `hoodUp`, `appearanceOverride` | Gear only: whether it is identified and worn, its hood, and the look it shows |
+| `identified`, `equipped`, `hoodUp` | Gear only: whether it is identified, whether it is worn, and its hood |
 
 `InventoryCatalog` describes every item the game knows: `InventoryCatalog.get(itemId)` returns its default holder, stack size and kind, `has(itemId)` tests an id, and `list(filter)` lists definitions, for example every consumable.
 
