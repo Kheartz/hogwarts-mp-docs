@@ -35,8 +35,15 @@ Use the navigation to browse the globals available to the selected environment. 
 
 **NPCs and creatures:**
 
-- [NPCs](/guides/npcs-and-creatures/npcs/) — spawning enemies, controlling their health, targets and AI, and what their deaths pay.
+- [NPCs](/guides/npcs-and-creatures/npcs/) — spawning enemies, controlling their health, targets and size, and their damage and death events.
 - [Beasts and characters](/guides/npcs-and-creatures/beasts-and-characters/) — tame creatures players care for, and stationary townspeople.
+
+**World:**
+
+- [Time and weather](/guides/world/time-and-weather/) — the shared clock, calendar, season and weather, holiday decor and the Headmaster's office.
+- [Objects and effects](/guides/world/objects-and-effects/) — placing props from the game's meshes and visual effects.
+- [Doors](/guides/world/doors/) — holding the game's doors locked or open for everyone, and deciding who gets in.
+- [Loot](/guides/world/loot/) — server-owned chests, moonstones and foragables, per-player contents, and switching off the game's own loot.
 
 **Running a server:**
 
