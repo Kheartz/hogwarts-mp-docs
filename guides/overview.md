@@ -20,9 +20,12 @@ Use the navigation to browse the globals available to the selected environment. 
 - [Your first resource](/guides/getting-started/first-resource/) — the manifest, script roles, load order, and sharing code between resources.
 - [Debugging](/guides/getting-started/debugging/) — where output and errors go on each side, and what an error does to a resource.
 
-**The idea everything builds on:**
+**The ideas everything builds on:**
 
+- [Authority](/guides/core-concepts/authority/) — what the server owns, what clients run and report, and how to handle what a client sends.
 - [Events](/guides/core-concepts/events/) — listeners, the client/server bridge, the runtime event catalog, and the trust boundary.
+- [State bags](/guides/core-concepts/state-bags/) — your own keys and values on players and other entities, replicated to the clients that need them.
+- [Virtual worlds](/guides/core-concepts/virtual-worlds/) — separate copies of the world for arenas, events and spectators.
 
 **Running a server:**
 
