@@ -52,6 +52,12 @@ Use the navigation to browse the globals available to the selected environment. 
 - [Map markers](/guides/user-interface/map-markers/) — markers, search circles and routes on the map, player blips, and the minimap.
 - [Keys and menus](/guides/user-interface/keys-and-menus/) — key bindings, locking the controls, and keeping the game's own menus shut.
 
+**Camera and sound:**
+
+- [Camera](/guides/camera-and-sound/camera/) — taking over the view with shots, paths and orbits, fades, and handing it back.
+- [Audio](/guides/camera-and-sound/audio/) — the game's sounds from the server or a client, soundbanks and music.
+- [Voice chat](/guides/camera-and-sound/voice-chat/) — who hears whom, voice ranges and tiers, muting, and each player's voice settings.
+
 **Running a server:**
 
 - [Hosting a server](/guides/hosting-a-server/run-a-server/) — installing on Windows or Linux, Foundations, ports, the masterlist, and updates.
@@ -109,13 +115,19 @@ if (pos) {
   console.log(pos.x, pos.y, pos.z);
 }
 
-const view = Camera.capture();
-if (view) {
-  Camera.activate(view);
-  Camera.orbit(view.position, { radius: 300, height: 100, speed: 25 });
-}
+Key.bind("f6", () => {
+  if (Camera.active) {
+    Camera.clearLookAt();
+    Camera.restore({ duration: 0.5, curve: "easeOut" });
+    return;
+  }
 
-Camera.restore({ duration: 0.5, curve: "easeOut" });
+  const target = LocalPlayer.getPosition();
+  const view = Camera.capture();
+  if (!target || !view) return;
+  Camera.activate({ position: { x: target.x + 300, y: target.y, z: target.z + 100 }, rotation: view.rotation });
+  Camera.orbit(target, { radius: 300, height: 100, speed: 25 });
+});
 ```
 
 > Server and client declarations must be loaded separately. A global shown in one environment is not automatically available in the other.
